@@ -2,11 +2,11 @@
 
 [Prometheus](http://prometheus.io) exporter for sensor metrics from [Intel Edison](https://software.intel.com/en-us/iot/hardware/edison).  
 
-Supported sensors:
+Currently, Grove temperature sensor is only supported.
 
- * Grove temperature sensor
+### Build and run
 
-Build on your machine using Golang 1.5+:
+Build on your machine using Go 1.5+:
 
     git clone https://github.com/roman-vynar/edison_exporter.git
     cd edison_exporter
@@ -18,10 +18,9 @@ Copy to Edison:
     
 Run:
 
-    ssh root@<Edison IP>
     root@edison:~# ./edison_exporter
 
-Flags:
+### Options
 
 Name                              | Description
 ----------------------------------|------------------------------------------------------------------------------------
@@ -32,7 +31,9 @@ Name                              | Description
 -sensor.temperature.interval      | Temperature sensor polling interval. (default 5s)
 -sensor.temperature.pin           | Pin number where temperature sensor is attached. (default 0)
 
-Sample output:
+### Samples
+
+Output:
 
     # HELP edison_exporter_scrapes_total Total number of scrapes.
     # TYPE edison_exporter_scrapes_total counter
@@ -43,3 +44,8 @@ Sample output:
     # HELP edison_sensor_temperature Current temperature.
     # TYPE edison_sensor_temperature gauge
     edison_sensor_temperature 21.321115976961153
+
+Graph with Grafana:
+
+![image](temperature.png)
+
