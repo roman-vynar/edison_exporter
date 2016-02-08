@@ -24,7 +24,7 @@ Run:
 
 Name                              | Description
 ----------------------------------|------------------------------------------------------------------------------------
--web.listen-address               | Address to listen on for web interface and telemetry. (default ":9111")
+-web.listen-address               | Address to listen on for web interface and telemetry. (default ":9122")
 -web.telemetry-path               | Path under which to expose metrics. (default "/metrics")
 -log.level value                  | Only log messages with the given severity or above. Valid levels: [debug, info, warn, error, fatal, panic]. (default info)
 -sensor.celsius-scale             | Whether to use Celsius scale, otherwise - Fahrenheit. (default true)

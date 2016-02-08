@@ -15,7 +15,7 @@ import (
 
 // Flags
 var (
-	listenAddress = flag.String("web.listen-address", ":9111", "Address to listen on for web interface and telemetry.")
+	listenAddress = flag.String("web.listen-address", ":9122", "Address to listen on for web interface and telemetry.")
 	metricPath = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
 	sensorTempPin = flag.String("sensor.temperature.pin", "0", "Pin number where temperature sensor is attached.")
 	sensorTempInterval = flag.Duration("sensor.temperature.interval", 5*time.Second, "Temperature sensor polling interval.")
@@ -24,13 +24,17 @@ var (
 
 const (
 	namespace = "edison"
+	staleInterval time.Duration = 5 * time.Minute
 )
 
-var currentTemperature float64
+var (
+	currentTemperature float64
+	lastUpdated time.Time = time.Now()
+)
 
 type Exporter struct {
-	up				prometheus.Gauge
-	totalScrapes    prometheus.Counter
+	up          	prometheus.Gauge
+	totalScrapes	prometheus.Counter
 }
 
 func NewExporter() *Exporter {
@@ -39,7 +43,7 @@ func NewExporter() *Exporter {
 			Namespace: namespace,
 			Subsystem: "exporter",
 			Name:      "up",
-			Help:      "Was the last scrape of sensor data successful.",
+			Help:      "Whether the sensor data is fresh.",
 		}),
 		totalScrapes: prometheus.NewCounter(prometheus.CounterOpts{
 			Namespace: namespace,
@@ -62,8 +66,7 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 }
 
 func (e *Exporter) scrape(ch chan<- prometheus.Metric) {
-	// XXX Can we detect an error when sensor or Edison is disconnected, or stale data?
-	if currentTemperature == 0 {
+	if time.Now().Sub(lastUpdated) > staleInterval {
 		e.up.Set(0)
 	} else {
 		e.up.Set(1)
@@ -89,6 +92,7 @@ func main() {
 	// Read temperature every X seconds
 	gobot.On(tempSensor.Event("data"), func(data interface{}) {
 		currentTemperature = data.(float64)
+		lastUpdated = time.Now()
 		if *celsiusScale == false {
 			currentTemperature = currentTemperature * 1.8 + 32
 		}
