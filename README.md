@@ -1,4 +1,4 @@
-# Edison exporter
+# IoT Edison exporter
 
 [Prometheus](http://prometheus.io) exporter for sensor metrics from [Intel Edison](https://software.intel.com/en-us/iot/hardware/edison).  
 

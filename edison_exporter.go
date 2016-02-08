@@ -109,7 +109,7 @@ func main() {
 		w.Write([]byte(`
 			<html>
 			<head>
-				<title>Edison exporter</title>
+				<title>IoT Edison exporter</title>
 			</head>
 			<body>
 				<h1>Prometheus exporter for sensor metrics from Intel Edison</h1>
