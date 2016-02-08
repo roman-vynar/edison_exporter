@@ -6,10 +6,11 @@ Currently, Grove temperature sensor is only supported.
 
 ### Build and run
 
-Build on your machine using Go 1.5+:
+Build on a machine using Go 1.5+ with GOPATH set:
 
     git clone https://github.com/roman-vynar/edison_exporter.git
     cd edison_exporter
+    go get -d
     GOARCH=386 GOOS=linux go build edison_exporter.go
 
 Copy to Edison:
